@@ -12,6 +12,8 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application.
     id 'application'
+
+    id 'jacoco'
 }
 
 repositories {
@@ -34,9 +36,24 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClassName = 'study.App'
+
+    sourceCompatibility = '1.13' // -source
+	targetCompatibility = '1.13' // -target
+}
+
+jacoco {
+	toolVersion = "0.8.5"
+	reportsDir = file("$buildDir/jacocoReport")
+
 }
 
 test {
     // Use junit platform for unit tests
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+
 }
