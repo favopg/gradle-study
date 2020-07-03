@@ -47,6 +47,7 @@ public class Attendance {
 	 */
 	public short calculateActualWork(short startHour, short startMinute, short endHour, short endMinute) {
 		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
 
 
 		return 0;
@@ -66,6 +67,19 @@ public class Attendance {
 		}
 
 		return 0;
+	}
+
+	/**
+	 * 時間が0より小さいかチェックする
+	 * @param time 時間
+	 * @return true:0より小さい false：0より大きい
+	 */
+	public boolean isMinus(short time) {
+		if (time < 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
