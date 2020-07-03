@@ -1,5 +1,6 @@
 package study.attendance;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -10,8 +11,8 @@ import java.util.Map;
  */
 public class Attendance {
 
-	private static final short ONE_REST_TIME_ACTUAL_WORK = 5;
-	private static final short TWO_REST_TIME_ACTUAL_WORK = 11;
+	private static final float ONE_REST_TIME_ACTUAL_WORK = 5F;
+	private static final float TWO_REST_TIME_ACTUAL_WORK = 11F;
 
 	public Attendance() {
 
@@ -42,13 +43,28 @@ public class Attendance {
 	 * @param startMinute
 	 * @param endHour
 	 * @param endMinute
-	 * @return
+	 * @return 実労働時間
 	 */
-	public short calculateActualWork(short startHour, short startMinute, short endHour, short endMinute) {
+	public float calculateActualWork(short startHour, short startMinute, short endHour, short endMinute) {
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
+		Calendar actualWork = Calendar.getInstance();
+		SimpleDateFormat timerFormat = new SimpleDateFormat("HH:mm");
 
-		return 0;
+		start.set(Calendar.HOUR_OF_DAY, startHour);
+		start.set(Calendar.MINUTE, startMinute);
+
+		end.set(Calendar.HOUR_OF_DAY, endHour);
+		end.set(Calendar.MINUTE, endMinute);
+
+		long timeInMillis = end.getTimeInMillis() - start.getTimeInMillis() - actualWork.getTimeZone().getRawOffset();
+		actualWork.setTimeInMillis(timeInMillis);
+
+		String[] hourAndMinute = timerFormat.format(actualWork.getTime()).split(":");
+		float hour = Integer.parseInt(hourAndMinute[0]);
+		float minute = Integer.parseInt(hourAndMinute[1]) / 60;
+
+		return hour + minute;
 	}
 
 	/**
@@ -56,15 +72,15 @@ public class Attendance {
 	 * @param actualWork 実労働
 	 * @return 休憩時間
 	 */
-	public short calculateRest(short actualWork) {
+	public float calculateRest(float actualWork) {
 
 		if (ONE_REST_TIME_ACTUAL_WORK < actualWork && TWO_REST_TIME_ACTUAL_WORK >= actualWork) {
-			return 1;
+			return 1F;
 		} else if (TWO_REST_TIME_ACTUAL_WORK < actualWork) {
-			return 2;
+			return 2F;
 		}
 
-		return 0;
+		return 0F;
 	}
 
 	/**

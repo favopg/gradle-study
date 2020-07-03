@@ -26,9 +26,9 @@ class AttendanceTest {
 	 */
 	@Test
 	void testActualWorkTwelveWhenRestHourTwo() {
-		short testData = 12;
-		short expected = 2;
-		short actual = attendance.calculateRest(testData);
+		float testData = 12;
+		float expected = 2;
+		float actual = attendance.calculateRest(testData);
 		assertEquals(expected, actual);
 	}
 
@@ -36,11 +36,10 @@ class AttendanceTest {
 	 * 実労働が6時間～11時間の場合は休憩時間が1時間となる
 	 */
 	@ParameterizedTest
-	@ValueSource(shorts = {6,7,8,9,10,11})
-	void testActualWorkSixWhenRestHourOne() {
-		short testData = 6;
-		short expected = 1;
-		short actual = attendance.calculateRest(testData);
+	@ValueSource(floats = {6,7,8,9,10,11})
+	void testActualWorkSixWhenRestHourOne(float testData) {
+		float expected = 1F;
+		float actual = attendance.calculateRest(testData);
 		assertEquals(expected, actual);
 	}
 
@@ -50,8 +49,8 @@ class AttendanceTest {
 	@ParameterizedTest
 	@ValueSource(shorts = {0,1,2,3,4,5})
 	void testActualWorkLessFiveWhenRestHourZero(short testData) {
-		short expected = 0;
-		short actual = attendance.calculateRest(testData);
+		float expected = 0F;
+		float actual = attendance.calculateRest(testData);
 		assertEquals(expected, actual);
 
 	}
@@ -77,5 +76,21 @@ class AttendanceTest {
 		boolean expected = false;
 		boolean actual = attendance.isMinus(testData);
 		assertEquals(expected, actual);
+	}
+
+	/**
+	 * 10時00分出勤、19時00分退勤の時に実働が9時間となる
+	 */
+	@Test
+	void testCalculateActualWork() {
+		short startHour = 10;
+		short startMinute = 00;
+		short endHour = 19;
+		short endMinute = 00;
+
+		float expected = 9F;
+		float actual = attendance.calculateActualWork(startHour, startMinute, endHour, endMinute);
+		assertEquals(expected, actual);
+
 	}
 }
