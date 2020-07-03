@@ -2,6 +2,7 @@ package study.attendance;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -20,7 +21,16 @@ public class Attendance {
 	}
 
 	/**
-	 * 現在年月を取得する
+	 * 月末日を取得する
+	 * @return 月末日
+	 */
+	public int getLastDay() {
+		LocalDate nowDate = LocalDate.now();
+		return Integer.parseInt(String.valueOf(nowDate.with(TemporalAdjusters.lastDayOfMonth())).split("-")[2]);
+	}
+
+	/**
+	 * 現在年月をyyyymm形式で取得する
 	 * @return yyyymm
 	 */
 	public String getNowYearAndMonth() {
@@ -37,6 +47,8 @@ public class Attendance {
 
 		return null;
 	}
+
+
 
 	/**
 	 * 出社時間、退勤時間から実労働時間を算出する、

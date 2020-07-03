@@ -3,6 +3,7 @@ package study.attendance;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +25,24 @@ class AttendanceTest {
 	}
 
 	/**
+	 * 今月末日を取得する
+	 */
+	@Test
+	void testGetLastDay() {
+		LocalDate nowDate = LocalDate.now();
+		int expected = Integer.parseInt(String.valueOf(nowDate.with(TemporalAdjusters.lastDayOfMonth())).split("-")[2]);
+		int actual = attendance.getLastDay();
+
+		assertEquals(expected, actual);
+	}
+
+	/**
 	 * 今日の年月を取得する
 	 */
 	@Test
 	void testNowYearAndMonth() {
 		LocalDate nowDate = LocalDate.now();
-		String expected =  String.valueOf(nowDate.getDayOfYear()) + String.valueOf(nowDate.getDayOfMonth());
+		String expected = String.valueOf(nowDate.getDayOfYear()) + String.valueOf(nowDate.getDayOfMonth());
 		String actual = attendance.getNowYearAndMonth();
 
 		assertEquals(expected, actual);
@@ -51,7 +64,7 @@ class AttendanceTest {
 	 * 実労働が6時間～11時間の場合は休憩時間が1時間となる
 	 */
 	@ParameterizedTest
-	@ValueSource(floats = {6F,7F,8F,9F,10F,11F})
+	@ValueSource(floats = { 6F, 7F, 8F, 9F, 10F, 11F })
 	void testActualWorkSixWhenRestHourOne(float testData) {
 		float expected = 1F;
 		float actual = attendance.calculateRest(testData);
@@ -62,7 +75,7 @@ class AttendanceTest {
 	 * 実労働が5時間以下の時に休憩時間は0時間となる
 	 */
 	@ParameterizedTest
-	@ValueSource(floats = {0F,1F,2F,3F,4F,5F})
+	@ValueSource(floats = { 0F, 1F, 2F, 3F, 4F, 5F })
 	void testActualWorkLessFiveWhenRestHourZero(float testData) {
 		float expected = 0F;
 		float actual = attendance.calculateRest(testData);
@@ -74,7 +87,7 @@ class AttendanceTest {
 	 * 負の値を渡した時にtrueで返却される
 	 */
 	@ParameterizedTest
-	@ValueSource(floats = {-1F,0F,-100F,-1000F})
+	@ValueSource(floats = { -1F, 0F, -100F, -1000F })
 	void testTimeIsMinusTrue(float testData) {
 		boolean expected = true;
 		boolean actual = attendance.isMinus(testData);
@@ -86,7 +99,7 @@ class AttendanceTest {
 	 * 正の値を渡した時にfalseで返却される
 	 */
 	@ParameterizedTest
-	@ValueSource(floats = {1F,10F,100F,1000F})
+	@ValueSource(floats = { 1F, 10F, 100F, 1000F })
 	void testTimeNotMinusFalse(float testData) {
 		boolean expected = false;
 		boolean actual = attendance.isMinus(testData);
