@@ -1,7 +1,6 @@
 package study.attendance;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +30,7 @@ public class Attendance {
 	 * 勤怠テンプレートを取得する
 	 * @return
 	 */
-	public List<Map<String, String>> getTemplateAttendance() {
+	public Map<String, String> getTemplateAttendance() {
 		// TODO データベースから取得する
 
 		return null;
@@ -48,7 +47,6 @@ public class Attendance {
 	public short calculateActualWork(short startHour, short startMinute, short endHour, short endMinute) {
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
-
 
 		return 0;
 	}
@@ -70,12 +68,12 @@ public class Attendance {
 	}
 
 	/**
-	 * 時間が0より小さいかチェックする
+	 * 0より小さいかチェックする
 	 * @param time 時間
-	 * @return true:0より小さい false：0より大きい
+	 * @return true:0以下 false：0より大きい
 	 */
 	public boolean isMinus(short time) {
-		if (time < 0) {
+		if (time <= 0) {
 			return true;
 		}
 

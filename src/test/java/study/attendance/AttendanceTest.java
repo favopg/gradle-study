@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * 勤怠アプリテストクラス
@@ -20,7 +22,7 @@ class AttendanceTest {
 	}
 
 	/**
-	 * 実労働が12時間の時に休憩時間は1時間となる
+	 * 実労働が12時間以上の場合は休憩時間が2時間となる
 	 */
 	@Test
 	void testActualWorkTwelveWhenRestHourTwo() {
@@ -31,9 +33,10 @@ class AttendanceTest {
 	}
 
 	/**
-	 * 実労働が6時間の時に休憩時間は1時間となる
+	 * 実労働が6時間～11時間の場合は休憩時間が1時間となる
 	 */
-	@Test
+	@ParameterizedTest
+	@ValueSource(shorts = {6,7,8,9,10,11})
 	void testActualWorkSixWhenRestHourOne() {
 		short testData = 6;
 		short expected = 1;
@@ -44,9 +47,9 @@ class AttendanceTest {
 	/**
 	 * 実労働が5時間以下の時に休憩時間は0時間となる
 	 */
-	@Test
-	void testActualWorkLessFiveWhenRestHourZero() {
-		short testData = 5;
+	@ParameterizedTest
+	@ValueSource(shorts = {0,1,2,3,4,5})
+	void testActualWorkLessFiveWhenRestHourZero(short testData) {
 		short expected = 0;
 		short actual = attendance.calculateRest(testData);
 		assertEquals(expected, actual);
@@ -54,26 +57,25 @@ class AttendanceTest {
 	}
 
 	/**
-	 * マイナス値を渡した時にtrueで返却される
+	 * 負の値を渡した時にtrueで返却される
 	 */
-	@Test
-	void testTimeIsMinusTrue() {
-		short testData = -10;
+	@ParameterizedTest
+	@ValueSource(shorts = {-1,0,-100,-1000})
+	void testTimeIsMinusTrue(short testData) {
 		boolean expected = true;
 		boolean actual = attendance.isMinus(testData);
 		assertEquals(expected, actual);
+
 	}
 
 	/**
-	 * プラス値を渡した時にfalseで返却される
+	 * 正の値を渡した時にfalseで返却される
 	 */
-	@Test
-	void testTimeNotMinusFalse() {
-		short testData = 10;
+	@ParameterizedTest
+	@ValueSource(shorts = {1,10,100,1000})
+	void testTimeNotMinusFalse(short testData) {
 		boolean expected = false;
 		boolean actual = attendance.isMinus(testData);
 		assertEquals(expected, actual);
 	}
-
-
 }
