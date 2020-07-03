@@ -1,5 +1,8 @@
 # gradle-study
 javaコードを書いていくプロジェクト
+勉強意識としてはテストコードを重点に置く
+
+## Java13を採用
 
 ## よく使うgradleコマンド集
 * コンパイル
@@ -32,7 +35,15 @@ javaコードを書いていくプロジェクト
 `git stash save`
 
 * ステージング環境に追加する
-`git add ファイル名 or git add -A`
+`git add ファイル名  or git add -A`
 
 * ブランチにプッシュする
 `git push origin ブランチ名`
+
+* 新規ブランチを作成し、チェックアウトする
+`git branch -b ブランチ名`
+
+
+## Junitの便利アノテーション
+* パラメータテスト時に使用する 暗黙的な型変換までやってくれる
+`@ParameterizedTest @ValueSource(小文字データ型 + s = 配列)`
