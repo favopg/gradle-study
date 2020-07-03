@@ -1,6 +1,7 @@
 package study.attendance;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -20,11 +21,11 @@ public class Attendance {
 
 	/**
 	 * 現在年月を取得する
-	 * @return
+	 * @return yyyymm
 	 */
 	public String getNowYearAndMonth() {
-
-		return "";
+		LocalDate nowDate = LocalDate.now();
+		return String.valueOf(nowDate.getDayOfYear()) + String.valueOf(nowDate.getDayOfMonth());
 	}
 
 	/**

@@ -2,6 +2,8 @@ package study.attendance;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +24,19 @@ class AttendanceTest {
 	}
 
 	/**
+	 * 今日の年月を取得する
+	 */
+	@Test
+	void testNowYearAndMonth() {
+		LocalDate nowDate = LocalDate.now();
+		String expected =  String.valueOf(nowDate.getDayOfYear()) + String.valueOf(nowDate.getDayOfMonth());
+		String actual = attendance.getNowYearAndMonth();
+
+		assertEquals(expected, actual);
+
+	}
+
+	/**
 	 * 実労働が12時間以上の場合は休憩時間が2時間となる
 	 */
 	@Test
@@ -36,7 +51,7 @@ class AttendanceTest {
 	 * 実労働が6時間～11時間の場合は休憩時間が1時間となる
 	 */
 	@ParameterizedTest
-	@ValueSource(floats = {6,7,8,9,10,11})
+	@ValueSource(floats = {6F,7F,8F,9F,10F,11F})
 	void testActualWorkSixWhenRestHourOne(float testData) {
 		float expected = 1F;
 		float actual = attendance.calculateRest(testData);
