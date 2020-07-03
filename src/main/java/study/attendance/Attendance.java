@@ -61,8 +61,9 @@ public class Attendance {
 		actualWork.setTimeInMillis(timeInMillis);
 
 		String[] hourAndMinute = timerFormat.format(actualWork.getTime()).split(":");
-		float hour = Integer.parseInt(hourAndMinute[0]);
-		float minute = Integer.parseInt(hourAndMinute[1]) / 60;
+
+		float hour = Float.parseFloat(hourAndMinute[0]);
+		float minute = Float.parseFloat(hourAndMinute[1]) / 60F;
 
 		return hour + minute;
 	}
@@ -88,7 +89,7 @@ public class Attendance {
 	 * @param time 時間
 	 * @return true:0以下 false：0より大きい
 	 */
-	public boolean isMinus(short time) {
+	public boolean isMinus(float time) {
 		if (time <= 0) {
 			return true;
 		}
