@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Map;
  */
 public class Attendance {
 
-	private static final float ONE_REST_TIME_ACTUAL_WORK = 5F;
-	private static final float TWO_REST_TIME_ACTUAL_WORK = 11F;
+	private static final float ONE_REST_TIME_ACTUAL_WORK = 6F;
+	private static final float TWO_REST_TIME_ACTUAL_WORK = 12F;
 
 	public Attendance() {
 
@@ -40,25 +41,23 @@ public class Attendance {
 
 	/**
 	 * 勤怠テンプレートを取得する
-	 * @return
+	 * @return 勤怠情報
 	 */
-	public Map<String, String> getTemplateAttendance() {
-		// TODO データベースから取得する
-
-		return null;
+	public Map<AttendanceItem, Object> getTemplateAttendance(int templateId) {
+		// TODO データベースから取得する いったんはダミーデータで作成
+		Map<AttendanceItem, Object> attendanceInfo = new HashMap<AttendanceItem, Object>();
+		return attendanceInfo;
 	}
 
-
-
 	/**
-	 * 出社時間、退勤時間から実労働時間を算出する、
+	 * 出社時間、退勤時間から労働時間を算出する、
 	 * @param startHour
 	 * @param startMinute
 	 * @param endHour
 	 * @param endMinute
 	 * @return 実労働時間
 	 */
-	public float calculateActualWork(short startHour, short startMinute, short endHour, short endMinute) {
+	public float calculateWork(short startHour, short startMinute, short endHour, short endMinute) {
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
 		Calendar actualWork = Calendar.getInstance();
@@ -82,15 +81,24 @@ public class Attendance {
 	}
 
 	/**
-	 * 実労働時間から休憩時間を算出する
-	 * @param actualWork 実労働
+	 * 実労働時間を算出する
+	 * @param work 労働時間
+	 * @return 実労働時間
+	 */
+	public float calculateActualWork(float work) {
+		return work - calculateRest(work);
+	}
+
+	/**
+	 * 労働時間から休憩時間を算出する
+	 * @param actualWork 労働時間
 	 * @return 休憩時間
 	 */
-	public float calculateRest(float actualWork) {
+	public float calculateRest(float work) {
 
-		if (ONE_REST_TIME_ACTUAL_WORK < actualWork && TWO_REST_TIME_ACTUAL_WORK >= actualWork) {
+		if (ONE_REST_TIME_ACTUAL_WORK <= work && TWO_REST_TIME_ACTUAL_WORK > work) {
 			return 1F;
-		} else if (TWO_REST_TIME_ACTUAL_WORK < actualWork) {
+		} else if (TWO_REST_TIME_ACTUAL_WORK <= work) {
 			return 2F;
 		}
 
