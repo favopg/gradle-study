@@ -14,6 +14,8 @@ plugins {
     id 'application'
 
     id 'jacoco'
+
+    id "org.flywaydb.flyway" version "6.5.0"
 }
 
 tasks.withType(JavaCompile) {
@@ -42,6 +44,12 @@ dependencies {
     // Use JUnit Jupiter Params for testing.
     testImplementation 'org.mockito:mockito-core:3.3.3'
 
+    // Use flyway
+    testImplementation 'org.flywaydb:flyway-core:6.5.0'
+
+    // Use mysqk
+    testImplementation 'mysql:mysql-connector-java:8.0.20'
+
 }
 
 application {
@@ -67,4 +75,15 @@ test {
 jacocoTestReport {
 	dependsOn test
 
+}
+
+run{
+    standardInput = System.in
+}
+
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/sample?serverTimezone=JST'
+    user = 'root'
+    password = ''
 }
