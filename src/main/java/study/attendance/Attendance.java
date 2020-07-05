@@ -14,8 +14,12 @@ import java.util.Map;
  */
 public class Attendance {
 
+	/** 休憩時間が不要な労働時間 */
 	private static final float ONE_REST_TIME_ACTUAL_WORK = 6F;
+	/** 休憩時間が必要な労働時間 */
 	private static final float TWO_REST_TIME_ACTUAL_WORK = 12F;
+	/** 定時の場合の労働時間 */
+	private static final float BASE_WORK = 8F;
 
 	public Attendance() {
 
@@ -82,11 +86,21 @@ public class Attendance {
 
 	/**
 	 * 実労働時間を算出する
-	 * @param work 労働時間
+	 * @param  労働時間
 	 * @return 実労働時間
 	 */
 	public float calculateActualWork(float work) {
 		return work - calculateRest(work);
+	}
+
+	/**
+	 * 実労働時間から残業時間を算出する
+	 * @param  実労働時間
+	 * @return 残業時間
+	 */
+	public float calculateOverWork(float actualWork) {
+
+		return actualWork - BASE_WORK;
 	}
 
 	/**

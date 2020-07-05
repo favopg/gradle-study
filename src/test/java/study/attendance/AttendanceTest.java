@@ -220,4 +220,29 @@ class AttendanceTest {
 		assertEquals(expected, actual);
 	}
 
+	/**
+	 * 実労働時間が8時間の時に残業時間が0時間となる
+	 */
+	@Test
+	void testActualWorkEightWhenOverWorkZero() {
+		float testData = 8F;
+		float expected = 0F;
+		float actual = attendance.calculateOverWork(testData);
+
+		assertEquals(expected, actual);
+
+	}
+
+	/**
+	 * 実労働時間が10時間の時に残業時間が2時間となる
+	 */
+	void testActualWorkTenWhenOverWorkTwo() {
+		float testData = 10F;
+		float expected = 2F;
+		float actual = attendance.calculateOverWork(testData);
+
+		assertEquals(expected, actual);
+
+	}
+
 }

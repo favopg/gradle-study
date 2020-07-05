@@ -38,6 +38,10 @@ dependencies {
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+
+    // Use JUnit Jupiter Params for testing.
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+
 }
 
 application {
