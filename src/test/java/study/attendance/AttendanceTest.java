@@ -19,16 +19,20 @@ import org.mockito.Mock;
  * @author イッシー
  *
  */
-class AttendanceTest {
+class AttendanceTest extends BaseDb{
 
-	Attendance attendance = null;
-
+	private Attendance attendance = null;
 	@Mock
-	Attendance mockAttendance;
+	private Attendance mockAttendance;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		attendance = new Attendance();
+	}
+
+	@Test
+	void testInsertData() throws Exception{
+		insertTestData(getIDatabaseConnection(getConnection()));
 	}
 
 	/**

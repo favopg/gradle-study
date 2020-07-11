@@ -47,8 +47,10 @@ dependencies {
     // Use flyway
     testImplementation 'org.flywaydb:flyway-core:6.5.0'
 
-    // Use mysqk
-    testImplementation 'mysql:mysql-connector-java:8.0.20'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
+
+	// https://mvnrepository.com/artifact/org.dbunit/dbunit
+	testCompile group: 'org.dbunit', name: 'dbunit', version: '2.7.0'
 
 }
 
@@ -72,6 +74,17 @@ test {
     finalizedBy jacocoTestReport
 }
 
+sourceSets {
+       test {
+       	  java {
+            srcDir 'src/test/java'
+           }
+           resources {
+               srcDir 'src/test/resources'
+           }
+       }
+}
+
 jacocoTestReport {
 	dependsOn test
 
@@ -83,7 +96,7 @@ run{
 
 
 flyway {
-    url = 'jdbc:mysql://localhost:3306/sample?serverTimezone=JST'
+    url = 'jdbc:mysql://localhost:3306/appendance?serverTimezone=JST'
     user = 'root'
-    password = ''
+    password = 'xxxx'
 }
