@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,11 +35,14 @@ class AttendanceTest extends BaseDb{
 	void setUp() throws Exception {
 		attendance = new Attendance();
 		con = getConnection();
+		insertTestData(getIDatabaseConnection(con));
 	}
 
-	@Test
-	void testInsertData() throws Exception{
-		insertTestData(getIDatabaseConnection(con));
+	@AfterEach
+	void tearDown() throws Exception {
+		String deleteSql = "delete from appendance.attendance";
+		PreparedStatement pstmt = con.prepareStatement(deleteSql);
+		pstmt.executeUpdate();
 	}
 
 	/**
