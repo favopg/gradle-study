@@ -3,9 +3,11 @@ package study.attendance;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,14 +27,17 @@ class AttendanceTest extends BaseDb{
 	@Mock
 	private Attendance mockAttendance;
 
+	private Connection con = null;
+
 	@BeforeEach
 	void setUp() throws Exception {
 		attendance = new Attendance();
+		con = getConnection();
 	}
 
 	@Test
 	void testInsertData() throws Exception{
-		insertTestData(getIDatabaseConnection(getConnection()));
+		insertTestData(getIDatabaseConnection(con));
 	}
 
 	/**
@@ -240,6 +245,7 @@ class AttendanceTest extends BaseDb{
 	/**
 	 * 実労働時間が10時間の時に残業時間が2時間となる
 	 */
+	@Test
 	void testActualWorkTenWhenOverWorkTwo() {
 		float testData = 10F;
 		float expected = 2F;
@@ -249,4 +255,37 @@ class AttendanceTest extends BaseDb{
 
 	}
 
+	/**
+	 * 2020年7月の勤怠レコードが取得できる
+	 */
+	@Test
+	void testGetAttendanceListRecordIs202007() {
+
+		List<Map<AttendanceItem,Object>> attendanceList = attendance.getAttendance(con, "202007");
+		int actual = attendanceList.size();
+		int expected = 31;
+
+		assertEquals(expected, actual);
+
+	}
+
+	/**
+	 * 勤怠レコードに1件登録できる
+	 */
+	@Test
+	void testRegisterAttendanceOneRecord() {
+		int expected = 1;
+
+		Map<AttendanceItem,Object> testData = new HashMap<AttendanceItem, Object>();
+		testData.put(AttendanceItem.yearAndMonth, "202008");
+		testData.put(AttendanceItem.day, "01");
+		testData.put(AttendanceItem.startHourMinute, 1000);
+		testData.put(AttendanceItem.endHourMinute, 1900);
+		testData.put(AttendanceItem.rest, 1.0);
+		testData.put(AttendanceItem.overWork, 1.0);
+
+		int actual = attendance.insertAttedance(con, testData);
+
+		assertEquals(expected, actual);
+	}
 }
